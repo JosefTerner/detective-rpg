@@ -3,7 +3,7 @@
 > A multiplayer card-based mystery game (4–20 players) — players investigate crimes in real time through a React UI backed by seven Spring Boot microservices.
 
 [![Build](https://img.shields.io/badge/build-in%20progress-yellow)]()
-[![Java](https://img.shields.io/badge/Java-17-blue)]()
+[![Java](https://img.shields.io/badge/Java-21-blue)]()
 [![React](https://img.shields.io/badge/React-18-blue)]()
 
 ---
@@ -58,11 +58,11 @@ All services register with [Service Registry :8761] (Eureka)
 
 | Tool | Version | Notes |
 |------|---------|-------|
-| JDK | 17+ | |
-| Maven | 3.8+ | |
-| Node.js | 16+ | Frontend only |
-| Docker | 24+ | Required for full-stack startup |
-| Docker Compose | 2+ | |
+| JDK | 21+     | |
+| Maven | 3.8+    | |
+| Node.js | 16+     | Frontend only |
+| Docker | 24+     | Required for full-stack startup |
+| Docker Compose | 2+      | |
 
 ---
 
