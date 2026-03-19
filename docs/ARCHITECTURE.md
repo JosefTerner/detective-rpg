@@ -82,7 +82,7 @@
                         │ HTTPS/REST
                         ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  API Gateway  (Spring Cloud Gateway / Java 17)               │
+│  API Gateway  (Spring Cloud Gateway / Java 21)               │
 │  :8080  — JWT validation, rate limiting, routing             │
 └──┬──────┬──────┬──────┬──────┬───────────────────────────────┘
    │      │      │      │      │  HTTP (internal, Eureka-resolved)
@@ -300,7 +300,11 @@ Full records in [`docs/adr/`](docs/adr/).
 | Constraint | Impact | Status |
 |------------|--------|--------|
 | All services are in scaffold stage — no implementation yet | Architecture may evolve as code is written | Expected; ADRs capture decisions as they firm up |
-| No distributed tracing yet | Hard to correlate logs across services | Planned: add correlation IDs via HTTP headers initially |
-| No event bus / message queue | Inter-service calls are synchronous; cascading failures possible | Acceptable for v1; async events could be added later if needed |
+| No distributed tracing yet | Hard to correlate logs across services | Planned: add `X-Correlation-ID` propagation in API Gateway + MDC in all services |
+| No event bus / message queue | Inter-service calls are synchronous; cascading failures possible | Mitigated by Transactional Outbox pattern for scoring events; v1 keeps all other calls synchronous |
 | Single Eureka server (no replica) | Service discovery is a single point of failure | Acceptable for v1; Eureka peer replication available when needed |
 | Polyglot persistence adds operational complexity | Multiple DB engines to run, backup, and migrate | Mitigated by Docker Compose; each service owns its own store |
+| Public path list duplicated in `JwtAuthenticationFilter` and `SecurityConfig` | DRY violation; paths can diverge silently | Planned: extract to a single shared config class |
+| `/actuator` public path allows all actuator endpoints | Sensitive actuator endpoints (env, beans) exposed without auth in dev | Acceptable for dev; restrict to `/actuator/health` before any staging deployment |
+| Verdict submission calls Time & Points Service synchronously | If scoring service is down, verdict submission fails | Planned: Transactional Outbox pattern in Case Service decouples verdict from scoring |
+| `is_planted` evidence flag exists in Police DB Service PostgreSQL | Must never appear in API responses to detectives — enforced only by DTO discipline today | Planned: test assertion that verifies the field is absent from all `/police/evidence/**` responses |

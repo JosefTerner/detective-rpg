@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Java build output
+target/
+*.class
+
+# Environment & secrets
+.env
+.env.*
+
+# Logs
+*.log
+
+# Node.js
+node_modules/
+
+# TODO files (tracked separately outside git)
+TODO.md
+**/TODO.md
